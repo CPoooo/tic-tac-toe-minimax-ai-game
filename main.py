@@ -119,24 +119,43 @@ def check_for_o_win():
 
 
 def game_over(player):
+    # TODO 1: make the board ACTUALLY change colors
     global GAME_OVER_FLAG
     GAME_OVER_FLAG = True
     # p1 win
     if player == 1:
+        screen.fill(BLACK)
         draw_lines(GREEN)
         pygame.display.set_caption("Player 1 wins")
+        pygame.display.flip()
     # p2 win
     elif player == 2:
+        screen.fill(BLACK)
         draw_lines(RED)
         pygame.display.set_caption("Player 2 wins")
-    pygame.display.flip()
+        pygame.display.flip()
 
+
+def reset_board():
+    global GAME_BOARD
+    global PLAYER
+    GAME_BOARD = [[0, 0, 0],
+                  [0, 0, 0],
+                  [0, 0, 0]]
+    PLAYER = 1
+    screen.fill(BLACK)
+    draw_lines()
+    pygame.display.flip()
 
 # game loop
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_r:
+                reset_board()
 
         elif event.type == pygame.MOUSEBUTTONDOWN and not GAME_OVER_FLAG:
             mouse_x, mouse_y = pygame.mouse.get_pos()
