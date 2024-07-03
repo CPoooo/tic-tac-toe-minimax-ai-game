@@ -1,5 +1,7 @@
 import pygame
 
+PLAYER = 1
+
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
@@ -12,7 +14,8 @@ SCREEN_HEIGHT = 600
 LINE_WIDTH = 6
 CELL_WIDTH = SCREEN_WIDTH // BOARD_COLS
 CELL_HEIGHT = SCREEN_HEIGHT // BOARD_ROWS
-X_CUSHION = 30 # the distance from the corners of a given cell that i want to start the x at
+X_CUSHION = 30  # the distance from the corners of a given cell that i want to start the x at
+O_CUSHION = 25
 
 GAME_BOARD = [[0, 0, 0],
               [0, 0, 0],
@@ -38,7 +41,6 @@ def draw_lines():
 
 
 def draw_x(row, col):
-
     # Calculate the top-left corner of the cell with cushion
     top_left_x = col * CELL_WIDTH + X_CUSHION
     top_left_y = row * CELL_HEIGHT + X_CUSHION
@@ -52,13 +54,12 @@ def draw_x(row, col):
     pygame.draw.line(screen, WHITE, (top_left_x, bottom_right_y), (bottom_right_x, top_left_y), width=6)
 
 
-
 def draw_o(row, col):
     # Calculate the center of the cell
     center_x = col * CELL_WIDTH + CELL_WIDTH // 2
     center_y = row * CELL_HEIGHT + CELL_HEIGHT // 2
     # Draw a circle to form O
-    pygame.draw.circle(screen, WHITE, (center_x, center_y), CELL_WIDTH // 2, width=6)
+    pygame.draw.circle(screen, WHITE, (center_x, center_y), CELL_WIDTH // 2 - O_CUSHION, width=6)
 
 
 def process_click(x, y):
@@ -70,8 +71,83 @@ def process_click(x, y):
     return [cell_row, cell_col]
 
 
+def is_board_full():
+    for row in range(BOARD_ROWS):
+        for col in range(BOARD_COLS):
+            if GAME_BOARD[row][col] == 0:
+                return False
+    return True
+
+
+def check_for_x_win():
+    # row wins for x
+    if GAME_BOARD[0][0] == 1 and GAME_BOARD[0][1] == 1 and GAME_BOARD[0][2] == 1:
+        # player x wins
+        print("x wins")
+    if GAME_BOARD[1][0] == 1 and GAME_BOARD[1][1] == 1 and GAME_BOARD[1][2] == 1:
+        # player x wins
+        print("x wins")
+    if GAME_BOARD[2][0] == 1 and GAME_BOARD[2][1] == 1 and GAME_BOARD[2][2] == 1:
+        # player x wins
+        print("x wins")
+    # col wins for x
+    if GAME_BOARD[0][0] == 1 and GAME_BOARD[1][0] == 1 and GAME_BOARD[2][0] == 1:
+        # player x wins
+        print("x wins")
+    if GAME_BOARD[0][1] == 1 and GAME_BOARD[1][1] == 1 and GAME_BOARD[2][1] == 1:
+        # player x wins
+        print("x wins")
+    if GAME_BOARD[0][2] == 1 and GAME_BOARD[1][2] == 1 and GAME_BOARD[2][2] == 1:
+        # player x wins
+        print("x wins")
+    # diag wins for x
+    if GAME_BOARD[0][0] == 1 and GAME_BOARD[1][1] == 1 and GAME_BOARD[2][2] == 1:
+        # player x wins
+        print("x wins")
+    if GAME_BOARD[0][2] == 1 and GAME_BOARD[1][1] == 1 and GAME_BOARD[2][0] == 1:
+        # player x wins
+        print("x wins")
+
+def check_for_o_win():
+    # row wins for x
+    if GAME_BOARD[0][0] == 2 and GAME_BOARD[0][1] == 2 and GAME_BOARD[0][2] == 2:
+        # player x wins
+        print("o wins")
+    if GAME_BOARD[1][0] == 2 and GAME_BOARD[1][1] == 2 and GAME_BOARD[1][2] == 2:
+        # player x wins
+        print("o wins")
+    if GAME_BOARD[2][0] == 2 and GAME_BOARD[2][1] == 2 and GAME_BOARD[2][2] == 2:
+        # player x wins
+        print("o wins")
+    # col wins for x
+    if GAME_BOARD[0][0] == 2 and GAME_BOARD[1][0] == 2 and GAME_BOARD[2][0] == 2:
+        # player x wins
+        print("o wins")
+    if GAME_BOARD[0][1] == 2 and GAME_BOARD[1][1] == 2 and GAME_BOARD[2][1] == 2:
+        # player x wins
+        print("o wins")
+    if GAME_BOARD[0][2] == 2 and GAME_BOARD[1][2] == 2 and GAME_BOARD[2][2] == 2:
+        # player x wins
+        print("o wins")
+    # diag wins for x
+    if GAME_BOARD[0][0] == 2 and GAME_BOARD[1][1] == 2 and GAME_BOARD[2][2] == 2:
+        # player x wins
+        print("o wins")
+    if GAME_BOARD[0][2] == 2 and GAME_BOARD[1][1] == 2 and GAME_BOARD[2][0] == 2:
+        # player x wins
+        print("o wins")
+
+# initial screen
+screen.fill(BLACK)
+draw_lines()
+
 # game loop
 while running:
+    check_for_x_win()
+    check_for_o_win()
+
+    if is_board_full():
+        print("Board is full need to check for winner")
 
     # checks if user clicks x to exit game
     for event in pygame.event.get():
@@ -89,19 +165,14 @@ while running:
             # Check if the cell is empty
             if GAME_BOARD[cell_row][cell_col] == 0:
                 # Update the board state
-                GAME_BOARD[cell_row][cell_col] = 1  # Player X move
+                if PLAYER == 1:
+                    GAME_BOARD[cell_row][cell_col] = 1  # Player x move
+                    draw_x(cell_row, cell_col)
+                else:
+                    GAME_BOARD[cell_row][cell_col] = 2  # Player o move
+                    draw_o(cell_row, cell_col)
 
-    # initial screen
-    screen.fill(BLACK)
-    draw_lines()
-
-    # Redraw X's and O's
-    for row in range(BOARD_ROWS):
-        for col in range(BOARD_COLS):
-            if GAME_BOARD[row][col] == 1:
-                draw_x(row, col)
-            elif GAME_BOARD[row][col] == 2:
-                draw_o(row, col)
+                PLAYER = PLAYER % 2 + 1
 
     # updates the screen
     pygame.display.flip()
