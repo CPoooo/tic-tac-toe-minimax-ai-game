@@ -127,13 +127,13 @@ def game_over(player):
         screen.fill(BLACK)
         draw_lines(GREEN)
         pygame.display.set_caption("Player 1 wins")
-        pygame.display.flip()
+        pygame.display.flip() # wont flip big L :(
     # p2 win
     elif player == 2:
         screen.fill(BLACK)
         draw_lines(RED)
         pygame.display.set_caption("Player 2 wins")
-        pygame.display.flip()
+        pygame.display.flip()  # wont flip big L :(
 
 
 def reset_board():
